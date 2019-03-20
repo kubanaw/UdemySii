@@ -8,26 +8,29 @@ class EntryPoint
     static void Main()
     {
 
-        string url = "http://testing.todorvachev.com/selectors/id/";
-        string ID = "testImage";
+        string url = "http://testing.todvachev.com/selectors/class-name/";
+        string css = "#post-107 > div > p.testClasss";
 
         IWebDriver driver = new ChromeDriver();
         driver.Navigate().GoToUrl(url);
 
-        IWebElement element = driver.FindElement(By.Id(ID));
+        IWebElement element;
 
-        if (element.Displayed)
+        try
         {
-            GreenMessage("Good");
+
+            element = driver.FindElement(By.CssSelector(css));        
+
+            if (element.Displayed)
+            {
+                GreenMessage("Good!");
+            }
         }
-        else
+        catch(NoSuchElementException)
         {
-            RedMessage("Not Good");
+            RedMessage("Not Good!"); 
         }
 
-        Thread.Sleep(3000);
-        driver.Quit();
-   
     }
 
     private static void RedMessage(string message)
