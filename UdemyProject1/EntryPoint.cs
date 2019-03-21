@@ -1,49 +1,30 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
 using System.Threading;
 
 class EntryPoint
 {
+    static IWebDriver driver = new ChromeDriver();
+    static IWebElement textBox;
+
     static void Main()
     {
 
-        string url = "http://testing.todvachev.com/selectors/class-name/";
-        string css = "#post-107 > div > p.testClasss";
+        string url = "http://testing.todvachev.com/special-elements/text-input-field/";
 
-        IWebDriver driver = new ChromeDriver();
         driver.Navigate().GoToUrl(url);
 
-        IWebElement element;
+        textBox = driver.FindElement(By.Name("username"));
 
-        try
-        {
+        textBox.SendKeys("dupa");
 
-            element = driver.FindElement(By.CssSelector(css));        
+        Thread.Sleep(3000);
 
-            if (element.Displayed)
-            {
-                GreenMessage("Good!");
-            }
-        }
-        catch(NoSuchElementException)
-        {
-            RedMessage("Not Good!"); 
-        }
+        textBox.Clear();
 
-    }
+        Thread.Sleep(3000);
 
-    private static void RedMessage(string message)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine(message);
-        Console.ForegroundColor = ConsoleColor.White;
-    }
+        driver.Quit();
 
-    private static void GreenMessage(string message)
-    {
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine(message);
-        Console.ForegroundColor = ConsoleColor.White;
     }
 }
