@@ -6,28 +6,40 @@ using System.Threading;
 class EntryPoint
 {
     static IWebDriver driver = new ChromeDriver();
-    static IWebElement radioButton;
+    static IAlert alert;
+    static IWebElement image;
 
     static void Main()
     {
-        string url = "http://testing.todvachev.com/special-elements/radio-button-test/";
-        string[] option = { "1", "3", "5" };
-
+        string url = "http://testing.todvachev.com/special-elements/alert-box/";
+     
         driver.Navigate().GoToUrl(url);
 
-        for (int i = 0; i < option.Length; i++)
-        {
-            radioButton = driver.FindElement(By.CssSelector("#post-10 > div > form > p:nth-child(6) > input[type=\"radio\"]:nth-child(" + option[i] + ")"));
+        Thread.Sleep(3000);
 
-            if (radioButton.GetAttribute("checked") == "true")
+        alert = driver.SwitchTo().Alert();
+
+        Console.WriteLine(alert.Text);
+
+        alert.Accept();
+
+        image = driver.FindElement(By.CssSelector("#post-119 > div > figure > img"));
+
+        try
+        {
+            if(image.Displayed)
             {
-                Console.WriteLine("The " + (i + 1) + " button is checked");
+                Console.WriteLine("Good");
             }
-            else
-            {
-                Console.WriteLine("This one is unchecked");
-            }
+
         }
+        catch (NoSuchElementException)
+        {
+            Console.WriteLine("Not good");
+        }
+
+        Thread.Sleep(3000);
+
         driver.Quit();
 
     }
